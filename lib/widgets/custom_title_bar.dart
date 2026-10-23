@@ -35,17 +35,16 @@ class _CustomTitleBarState extends State<CustomTitleBar> {
   @override
   Widget build(BuildContext context) {
     if (_isFullScreen) {
-      // In fullscreen mode, keep titlebar hidden or minimal hover
       return const SizedBox.shrink();
     }
 
     return Container(
-      height: 48,
+      height: 46,
       decoration: const BoxDecoration(
-        color: Color(0xFF0D0E13),
+        color: Color(0xF2090A0E),
         border: Border(
           bottom: BorderSide(
-            color: Color(0x22D4AF37),
+            color: Color(0x1FFFFFFF),
             width: 1,
           ),
         ),
@@ -59,46 +58,70 @@ class _CustomTitleBarState extends State<CustomTitleBar> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
                   children: [
-                    // Brand / Logo Icon
+                    // Brand Glyph
                     Container(
-                      width: 26,
-                      height: 26,
+                      width: 24,
+                      height: 24,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: const Color(0xFFD4AF37), width: 1.5),
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFF262115), Color(0xFF101115)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
+                        border: Border.all(color: const Color(0xFFD4AF37), width: 1.2),
+                        gradient: const RadialGradient(
+                          colors: [Color(0xFF2A2315), Color(0xFF0F1015)],
                         ),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0x33D4AF37),
+                            blurRadius: 8,
+                            spreadRadius: 1,
+                          ),
+                        ],
                       ),
                       child: const Center(
                         child: Icon(
-                          Icons.swap_calls_rounded,
-                          size: 15,
-                          color: Color(0xFFD4AF37),
+                          Icons.all_inclusive_rounded,
+                          size: 13,
+                          color: Color(0xFFE5C07B),
                         ),
                       ),
                     ),
                     const SizedBox(width: 10),
+                    // App Title
                     const Text(
                       'HANGLY',
                       style: TextStyle(
-                        color: Color(0xFFE8D7A5),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 2.5,
+                        color: Color(0xFFF0E6D2),
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 3.0,
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    // Subtle Divider
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: const Color(0x1FD4AF37),
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(color: const Color(0x33D4AF37)),
+                      ),
+                      child: const Text(
+                        'STUDIO',
+                        style: TextStyle(
+                          color: Color(0xFFD4AF37),
+                          fontSize: 9,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    // Divider
                     Container(
                       width: 1,
-                      height: 18,
-                      color: const Color(0x33D4AF37),
+                      height: 16,
+                      color: const Color(0x1AFFFFFF),
                     ),
-                    const SizedBox(width: 16),
-                    // Mode Selector Pill
+                    const SizedBox(width: 20),
+                    // Segmented Mode Switcher
                     _buildModeSelector(),
                   ],
                 ),
@@ -111,30 +134,26 @@ class _CustomTitleBarState extends State<CustomTitleBar> {
             mainAxisSize: MainAxisSize.min,
             children: [
               // Reset physics positions button
-              IconButton(
+              _buildActionButton(
+                icon: Icons.restart_alt_rounded,
                 tooltip: 'Reset Swing Positions',
-                icon: const Icon(Icons.refresh_rounded, size: 18, color: Color(0xFF9E9FA8)),
-                splashRadius: 18,
-                onPressed: () {
-                  widget.controller.resetPositions();
-                },
+                onTap: () => widget.controller.resetPositions(),
               ),
 
               // Fullscreen toggle
-              IconButton(
+              _buildActionButton(
+                icon: Icons.fullscreen_rounded,
                 tooltip: 'Toggle Full Screen',
-                icon: const Icon(Icons.fullscreen_rounded, size: 20, color: Color(0xFF9E9FA8)),
-                splashRadius: 18,
-                onPressed: () async {
+                onTap: () async {
                   final isFull = await windowManager.isFullScreen();
                   await windowManager.setFullScreen(!isFull);
-                  setState(() {
-                    _isFullScreen = !isFull;
-                  });
+                  setState(() => _isFullScreen = !isFull);
                 },
               ),
 
-              const SizedBox(width: 8),
+              const SizedBox(width: 4),
+              Container(width: 1, height: 16, color: const Color(0x1AFFFFFF)),
+              const SizedBox(width: 4),
 
               // Minimize
               _buildWindowButton(
@@ -145,7 +164,7 @@ class _CustomTitleBarState extends State<CustomTitleBar> {
               // Maximize / Restore
               _buildWindowButton(
                 icon: _isMaximized ? Icons.filter_none_rounded : Icons.crop_square_rounded,
-                iconSize: 14,
+                iconSize: 13,
                 onTap: () async {
                   if (await windowManager.isMaximized()) {
                     await windowManager.unmaximize();
@@ -176,17 +195,28 @@ class _CustomTitleBarState extends State<CustomTitleBar> {
       builder: (context, _) {
         final currentMode = widget.controller.mode;
         return Container(
-          padding: const EdgeInsets.all(2),
+          padding: const EdgeInsets.all(2.5),
           decoration: BoxDecoration(
-            color: const Color(0xFF14151C),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: const Color(0x22FFFFFF), width: 1),
+            color: const Color(0xFF13141C),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: const Color(0x1AFFFFFF)),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildModeTab('Experience', 'experience', currentMode == 'experience'),
-              _buildModeTab('Edit Mode', 'edit', currentMode == 'edit'),
+              _buildModeTab(
+                label: 'Experience',
+                icon: Icons.remove_red_eye_outlined,
+                modeKey: 'experience',
+                isSelected: currentMode == 'experience',
+              ),
+              const SizedBox(width: 2),
+              _buildModeTab(
+                label: 'Edit Mode',
+                icon: Icons.tune_rounded,
+                modeKey: 'edit',
+                isSelected: currentMode == 'edit',
+              ),
             ],
           ),
         );
@@ -194,24 +224,71 @@ class _CustomTitleBarState extends State<CustomTitleBar> {
     );
   }
 
-  Widget _buildModeTab(String label, String modeKey, bool isSelected) {
+  Widget _buildModeTab({
+    required String label,
+    required IconData icon,
+    required String modeKey,
+    required bool isSelected,
+  }) {
     return GestureDetector(
       onTap: () => widget.controller.setMode(modeKey),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        duration: const Duration(milliseconds: 180),
+        padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 4),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFD4AF37) : Colors.transparent,
-          borderRadius: BorderRadius.circular(14),
+          color: isSelected ? const Color(0xFF222432) : Colors.transparent,
+          borderRadius: BorderRadius.circular(6),
+          border: isSelected ? Border.all(color: const Color(0x33D4AF37)) : null,
+          boxShadow: isSelected
+              ? const [
+                  BoxShadow(
+                    color: Color(0x22000000),
+                    blurRadius: 4,
+                    offset: Offset(0, 1),
+                  ),
+                ]
+              : null,
         ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isSelected ? const Color(0xFF0C0D11) : const Color(0xFF8E909B),
-            fontSize: 11,
-            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-            letterSpacing: 0.3,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              size: 13,
+              color: isSelected ? const Color(0xFFE5C07B) : const Color(0xFF757888),
+            ),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? const Color(0xFFF3ECE1) : const Color(0xFF888B9A),
+                fontSize: 11,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                letterSpacing: 0.2,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionButton({
+    required IconData icon,
+    required String tooltip,
+    required VoidCallback onTap,
+  }) {
+    return Tooltip(
+      message: tooltip,
+      waitDuration: const Duration(milliseconds: 400),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(6),
+        child: Container(
+          width: 32,
+          height: 32,
+          alignment: Alignment.center,
+          child: Icon(icon, size: 16, color: const Color(0xFF8E92A2)),
         ),
       ),
     );
@@ -220,22 +297,26 @@ class _CustomTitleBarState extends State<CustomTitleBar> {
   Widget _buildWindowButton({
     required IconData icon,
     required VoidCallback onTap,
-    double iconSize = 16,
+    double iconSize = 15,
     bool isClose = false,
   }) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        width: 44,
-        height: 48,
-        alignment: Alignment.center,
-        child: Icon(
-          icon,
-          size: iconSize,
-          color: const Color(0xFF9E9FA8),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        hoverColor: isClose ? const Color(0xFFE81123) : const Color(0x1AFFFFFF),
+        child: SizedBox(
+          width: 44,
+          height: 46,
+          child: Center(
+            child: Icon(
+              icon,
+              size: iconSize,
+              color: const Color(0xFF9EA2B4),
+            ),
+          ),
         ),
       ),
     );
   }
 }
-

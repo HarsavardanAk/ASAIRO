@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 import '../controllers/scene_controller.dart';
@@ -36,7 +37,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
 
-              // 2. Custom Title Bar at Top
+              // 2. Custom Sleek Title Bar at Top
               Positioned(
                 top: 0,
                 left: 0,
@@ -44,78 +45,113 @@ class HomeScreen extends StatelessWidget {
                 child: CustomTitleBar(controller: controller),
               ),
 
-              // 3. Floating Bottom Control Bar in Experience Mode
+              // 3. Floating Experience Island in Experience Mode
               if (!isEdit)
                 Positioned(
                   bottom: 24,
                   left: 0,
                   right: 0,
                   child: Center(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: const Color(0xD0111218),
-                        borderRadius: BorderRadius.circular(24),
-                        border: Border.all(color: const Color(0x33D4AF37), width: 1),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x66000000),
-                            blurRadius: 16,
-                            offset: Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.touch_app_outlined, size: 16, color: Color(0xFFD4AF37)),
-                          const SizedBox(width: 8),
-                          const Text(
-                            'Drag ornaments to swing • Scroll to zoom',
-                            style: TextStyle(
-                              color: Color(0xFFC7CBD8),
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(width: 14),
-                          Container(width: 1, height: 16, color: const Color(0x33D4AF37)),
-                          const SizedBox(width: 14),
-                          // Quick Customize button
-                          InkWell(
-                            onTap: () => controller.setMode('edit'),
-                            borderRadius: BorderRadius.circular(12),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.tune_rounded, size: 14, color: Color(0xFFD4AF37)),
-                                  SizedBox(width: 6),
-                                  Text(
-                                    'Customize',
-                                    style: TextStyle(
-                                      color: Color(0xFFE8D7A5),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(22),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+                          decoration: BoxDecoration(
+                            color: const Color(0xB8101117),
+                            borderRadius: BorderRadius.circular(22),
+                            border: Border.all(color: const Color(0x2EFFFFFF), width: 1),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0x66000000),
+                                blurRadius: 20,
+                                offset: Offset(0, 4),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 22,
+                                height: 22,
+                                decoration: BoxDecoration(
+                                  color: const Color(0x1AD4AF37),
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: const Color(0x33D4AF37)),
+                                ),
+                                child: const Icon(Icons.touch_app_rounded, size: 12, color: Color(0xFFE5C07B)),
+                              ),
+                              const SizedBox(width: 10),
+                              const Text(
+                                'Drag ornaments to swing',
+                                style: TextStyle(
+                                  color: Color(0xFFE2E4EC),
+                                  fontSize: 11.5,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              const Text(
+                                '•',
+                                style: TextStyle(color: Color(0xFF4C4F60)),
+                              ),
+                              const SizedBox(width: 6),
+                              const Text(
+                                'Scroll to zoom',
+                                style: TextStyle(
+                                  color: Color(0xFF888B9A),
+                                  fontSize: 11.5,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              const SizedBox(width: 14),
+                              Container(width: 1, height: 14, color: const Color(0x22FFFFFF)),
+                              const SizedBox(width: 10),
+                              // Customize pill button
+                              InkWell(
+                                onTap: () => controller.setMode('edit'),
+                                borderRadius: BorderRadius.circular(14),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4.5),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF222432),
+                                    borderRadius: BorderRadius.circular(14),
+                                    border: Border.all(color: const Color(0x33D4AF37)),
+                                  ),
+                                  child: const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.tune_rounded, size: 12, color: Color(0xFFE5C07B)),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Studio',
+                                        style: TextStyle(
+                                          color: Color(0xFFF3ECE1),
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
 
-              // 4. Slide-in Edit Mode Object Studio Sheet
+              // 4. Slide-in Professional Object Studio Sheet
               AnimatedPositioned(
-                duration: const Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 280),
                 curve: Curves.easeOutCubic,
-                top: 48,
+                top: 46,
                 bottom: 0,
-                right: isEdit ? 0 : -360,
+                right: isEdit ? 0 : -380,
                 child: EditObjectSheet(controller: controller),
               ),
 
@@ -131,11 +167,11 @@ class HomeScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: const Color(0xCC111218),
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: const Color(0x44D4AF37)),
+                        border: Border.all(color: const Color(0x33D4AF37)),
                       ),
                       child: IconButton(
                         tooltip: 'Exit Fullscreen',
-                        icon: const Icon(Icons.fullscreen_exit_rounded, color: Color(0xFFD4AF37)),
+                        icon: const Icon(Icons.fullscreen_exit_rounded, color: Color(0xFFE5C07B)),
                         onPressed: () => windowManager.setFullScreen(false),
                       ),
                     );

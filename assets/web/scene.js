@@ -166,55 +166,55 @@ function initScene() {
 }
 
 function setupLighting() {
-  // Ambient fill
-  ambientLight = new THREE.AmbientLight(0x232733, 0.9);
+  // Balanced ambient light so dark details remain visible without being washed out
+  ambientLight = new THREE.AmbientLight(0x1a1c24, 1.4);
   scene.add(ambientLight);
 
-  // Overhead Key Spot Light
-  spotLight = new THREE.SpotLight(0xfff3db, 2.8);
-  spotLight.position.set(0, 7.5, 3.5);
-  spotLight.angle = Math.PI / 3;
-  spotLight.penumbra = 0.8;
-  spotLight.decay = 1.6;
-  spotLight.distance = 25;
+  // Overhead Key Spot Light - focused on hanging ornaments
+  spotLight = new THREE.SpotLight(0xfff6e8, 3.2);
+  spotLight.position.set(0, 7.5, 4.0);
+  spotLight.angle = Math.PI / 3.2;
+  spotLight.penumbra = 0.9;
+  spotLight.decay = 1.8;
+  spotLight.distance = 28;
   spotLight.castShadow = true;
   spotLight.shadow.mapSize.width = 2048;
   spotLight.shadow.mapSize.height = 2048;
   spotLight.shadow.camera.near = 1.0;
-  spotLight.shadow.camera.far = 15;
-  spotLight.shadow.bias = -0.0005;
+  spotLight.shadow.camera.far = 18;
+  spotLight.shadow.bias = -0.0004;
+  spotLight.shadow.radius = 2.5;
   scene.add(spotLight);
 
-  // Warm Gold Rim Light from bottom-back
-  warmKeyLight = new THREE.DirectionalLight(0xd4af37, 1.3);
-  warmKeyLight.position.set(-5, 3, -4);
+  // Warm Gold Rim Accent Light
+  warmKeyLight = new THREE.DirectionalLight(0xe8c15a, 1.4);
+  warmKeyLight.position.set(-6, 3.5, -3.5);
   scene.add(warmKeyLight);
 
-  // Cool Blue Depth Light
-  rimLight = new THREE.DirectionalLight(0x4a6582, 0.9);
-  rimLight.position.set(5, 2, -3);
+  // Cool Titanium Rim Light for edge separation
+  rimLight = new THREE.DirectionalLight(0x5a7596, 1.0);
+  rimLight.position.set(6, 3.0, -3.0);
   scene.add(rimLight);
 }
 
 function setupArchitecturalEnvironment() {
-  // Ceiling rail / bar from which cords hang
-  const railGeom = new THREE.CylinderGeometry(0.045, 0.045, 18, 32);
+  // Architectural mounting rail at top
+  const railGeom = new THREE.CylinderGeometry(0.04, 0.04, 28, 32);
   railGeom.rotateZ(Math.PI / 2);
   const railMat = new THREE.MeshStandardMaterial({
-    color: 0x1a1a24,
-    metalness: 0.9,
-    roughness: 0.25,
+    color: 0x1d1e26,
+    metalness: 0.92,
+    roughness: 0.28,
   });
   const rail = new THREE.Mesh(railGeom, railMat);
   rail.position.set(0, 4.5, 0);
   scene.add(rail);
 
-  // Floor plane for soft shadows and reflections
-  const floorGeom = new THREE.PlaneGeometry(30, 30);
-  const floorMat = new THREE.MeshStandardMaterial({
-    color: 0x07080b,
-    roughness: 0.7,
-    metalness: 0.3,
+  // Infinite Shadow Receiver Floor: uses ShadowMaterial so there are NEVER any harsh polygon edges!
+  // The background color 0x0a0b0e shines through infinitely, and only the soft luxury contact shadows appear.
+  const floorGeom = new THREE.PlaneGeometry(160, 160);
+  const floorMat = new THREE.ShadowMaterial({
+    opacity: 0.55,
   });
   const floor = new THREE.Mesh(floorGeom, floorMat);
   floor.rotation.x = -Math.PI / 2;
