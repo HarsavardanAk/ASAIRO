@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Hangly 3D Scene</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Cinematic Ambient Vignette & Beam -->
+  <div class="ceiling-beam"></div>
+  <div class="ambient-lighting"></div>
+  <div class="vignette"></div>
+
+  <!-- Object hover tooltip -->
+  <div id="object-tooltip"></div>
+
+  <!-- WebGL Canvas Container -->
+  <div id="canvas-container"></div>
+
+  <!-- Elegant Loading Overlay -->
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading 3D Studio</div>
+  </div>
+
+  <!-- Three.js Offline Libraries -->
+  <script src="libs/three.min.js"></script>
+  <script src="libs/GLTFLoader.js"></script>
+  <script src="libs/OrbitControls.js"></script>
+
+  <!-- Physics Engine and Scene Core -->
+  <script src="physics.js"></script>
+  <script src="scene.js"></script>
+</body>
+</html>
+
